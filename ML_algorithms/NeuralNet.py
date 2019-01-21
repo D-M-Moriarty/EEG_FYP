@@ -1,7 +1,5 @@
 import numpy as np
 import pandas as pd
-from keras.metrics import categorical_accuracy
-from keras.optimizers import Adam
 
 updf1 = pd.read_csv("../data_files/up/upFor5(1).csv")
 updf2 = pd.read_csv("../data_files/up/upFor5(2).csv")

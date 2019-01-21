@@ -1,5 +1,5 @@
-import pandas as pd
 import numpy as np
+import pandas as pd
 from xgboost import XGBClassifier
 
 df = pd.read_csv("../data_files/up/testEeg.csv")
@@ -42,7 +42,6 @@ print("The score for XGBoost ", xgb.score(x_test, y_test))
 print("XGBoost most important features ", xgb.feature_importances_)
 
 from sklearn.preprocessing import LabelBinarizer
-from keras.utils import to_categorical
 
 encoder = LabelBinarizer()
 

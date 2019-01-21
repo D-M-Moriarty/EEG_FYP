@@ -1,8 +1,8 @@
-import pandas as pd
 import numpy as np
-from xgboost import XGBClassifier
+import pandas as pd
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import LabelBinarizer
+from xgboost import XGBClassifier
 
 updf1 = pd.read_csv("../data_files/up/upFor5(1).csv")
 updf2 = pd.read_csv("../data_files/up/upFor5(2).csv")
