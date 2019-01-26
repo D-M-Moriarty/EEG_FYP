@@ -77,21 +77,33 @@ print(labels.shape)
 # creating training and test sets
 x_train, x_test, y_train, y_test = train_test_split(data, labels)
 
+X_std = (x_train - x_train.min(axis=0)) / (x_train.max(axis=0) - x_train.min(axis=0))
+X_scaled = X_std * (np.max(x_train) - np.min(x_train)) + np.min(x_train)
+
+x_train = x_train.astype('float32') / X_scaled
+
+# Y_std = (y_train - y_train.min(axis=0)) / (y_train.max(axis=0) - y_train.min(axis=0))
+# Y_scaled = Y_std * (np.max(y_train) - np.min(y_train)) + np.min(y_train)
+# y_train = y_train.astype('float32') / Y_scaled
+# y_train = y_train.astype('float32') / X_scaled
+
 from keras import models
 from keras import layers
 
 network = models.Sequential()
 network.add(layers.Dense(64, input_shape=(9,)))
-network.add(layers.Dense(32, activation="relu"))
-network.add(layers.Dense(3, activation='sigmoid'))
+network.add(layers.Dense(64, activation="relu"))
+network.add(layers.Dense(3, activation='softmax'))
 
 # Adam = Adam(lr=0.05)
 network.compile(optimizer="Adam",
-                loss='binary_crossentropy',
+                loss='categorical_crossentropy',
                 metrics=['acc'])
 
-history = network.fit(x_train, y_train,
+history = network.fit(x_train, y_train, validation_split=0.33,
                       epochs=10, verbose=1)
+
+network.save('../models/neural_net.h5')
 
 loss_and_metrics = network.evaluate(x_test, y_test)
 print('loss and metrics', loss_and_metrics)
@@ -114,6 +126,22 @@ plt.title('Model loss')
 plt.ylabel('Loss')
 plt.xlabel('Epoch')
 plt.legend(['Train', 'Test'], loc='upper left')
+plt.show()
+
+acc = history.history['acc']
+val_acc = history.history['val_acc']
+loss = history.history['loss']
+val_loss = history.history['val_loss']
+epochs = range(1, len(acc) + 1)
+plt.plot(epochs, acc, 'bo', label='Training acc')
+plt.plot(epochs, val_acc, 'b', label='Validation acc')
+plt.title('Training and validation accuracy')
+plt.legend()
+plt.figure()
+plt.plot(epochs, loss, 'bo', label='Training loss')
+plt.plot(epochs, val_loss, 'b', label='Validation loss')
+plt.title('Training and validation loss')
+plt.legend()
 plt.show()
 # network = models.Sequential()
 # network.add(layers.Dense(64, input_shape=(9,)))

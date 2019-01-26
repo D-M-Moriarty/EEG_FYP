@@ -67,7 +67,7 @@ from keras import models
 from keras import layers
 
 model = models.Sequential()
-model.add(layers.Conv2D(32, (3, 3), activation='relu', input_shape=(9, 10, 1)))
+model.add(layers.Conv2D(32, (3, 3), activation='relu', input_shape=(90, 10, 1)))
 # model.add(layers.MaxPooling2D((2, 2)))
 model.add(layers.Conv2D(64, (3, 3), activation='relu'))
 # model.add(layers.MaxPooling2D((3, 3)))
@@ -87,19 +87,25 @@ model.add(layers.Dense(3, activation='softmax'))
 
 model.summary()
 
-x_train = x_train.reshape((4224, 9, 10, 1))
-x_train = x_train.astype('float32') / 255
+x_train = x_train.reshape((423, 90, 10, 1))
+print(np.max(x_train))
+print(np.max(x_test))
+print(np.min(x_train))
+X_std = (x_train - x_train.min(axis=0)) / (x_train.max(axis=0) - x_train.min(axis=0))
+X_scaled = X_std * (np.max(x_train) - np.min(x_train)) + np.min(x_train)
 
-x_test = x_test.reshape((1408, 9, 10, 1))
-x_test = x_test.astype('float32') / 255
+x_train = x_train.astype('float32') / X_scaled
+
+# x_test = x_test.reshape((2, 90, 10, 1))
+# x_test = x_test.astype('float32') / X_scaled
 
 # y_train = to_categorical(y_train)
 # y_test = to_categorical(y_test)
 
 print(y_train)
 
-model.compile(optimizer='rmsprop',
+model.compile(optimizer='adam',
               loss='categorical_crossentropy',
               metrics=['accuracy'])
 
-model.fit(x_train, y_train, epochs=5, batch_size=64)
+model.fit(x_train, y_train, epochs=15, batch_size=64)

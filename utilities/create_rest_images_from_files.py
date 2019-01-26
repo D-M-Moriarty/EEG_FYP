@@ -34,7 +34,7 @@ def chunks(l, n):
         yield l[i:i + n]
 
 
-list = list(chunks(data_image, 90))
+list = list(chunks(data_image, 900))
 
 a = np.asarray(list)
 
