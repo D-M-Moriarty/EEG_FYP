@@ -29,7 +29,7 @@ start = time.clock();
 i = 0;
 # app registration step (in this instance unnecessary)
 # tn.write('{"appName": "Example", "appKey": "9f54141b4b4c567c558d3a76cb8d715cbde03096"}');
-tn.write('{"enableRawOutput": true, "format": "Json"}');
+tn.write(('{"enableRawOutput": true, "format": "Json"}').encode('ascii'))
 
 blink_or_not = raw_input('Non-zero blink(1) or zero blink(0): ')
 
@@ -113,23 +113,23 @@ str([meditation_values])+','+str([theta_values])+','+str([time_array])+','+'\n')
 fd.close()
 
 '''
-dataset_pre = pd.read_csv('darren_data_eeg_pre.csv')
+# dataset_pre = pd.read_csv('darren_data_eeg_pre.csv')
 min_time_list = []
 
 # Reading the data stored till now
-dataset = pd.read_csv('darren_data_eeg_pre.csv')
+# dataset = pd.read_csv('darren_data_eeg_pre.csv')
 
-dataset = dataset.append(pd.Series([person_name, [attention_values], [blinkStrength_values], [delta_values]
-                                       , [highAlpha_values], [highBeta_values], [highGamma_values], [lowAlpha_values],
-                                    [lowBeta_values], [lowGamma_values], [meditation_values],
-                                    [theta_values]],
-                                   index=['Name', 'attention', 'blinkStrength', 'delta', 'highAlpha', 'highBeta',
-                                          'highGamma', 'lowAlpha', 'lowBeta', 'lowGamma', 'meditation', 'theta']),
-                         ignore_index=True)
-
-# Appending and storing the data in the same csv
-# dataset.append(data_row)
-dataset.to_csv('darren_data_eeg_pre.csv')
+# dataset = dataset.append(pd.Series([person_name, [attention_values], [blinkStrength_values], [delta_values]
+#                                        , [highAlpha_values], [highBeta_values], [highGamma_values], [lowAlpha_values],
+#                                     [lowBeta_values], [lowGamma_values], [meditation_values],
+#                                     [theta_values]],
+#                                    index=['Name', 'attention', 'blinkStrength', 'delta', 'highAlpha', 'highBeta',
+#                                           'highGamma', 'lowAlpha', 'lowBeta', 'lowGamma', 'meditation', 'theta']),
+#                          ignore_index=True)
+#
+# # Appending and storing the data in the same csv
+# # dataset.append(data_row)
+# dataset.to_csv('darren_data_eeg_pre.csv')
 
 tn.close();
 # outfptr.close();

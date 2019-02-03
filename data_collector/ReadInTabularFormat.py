@@ -2,8 +2,6 @@ import numpy as np
 import pandas as pd
 
 # Initializing the arrays required to store the data.
-from notebook.notebookapp import raw_input
-
 attention_values = np.array([])
 meditation_values = np.array([])
 delta_values = np.array([])
@@ -28,15 +26,15 @@ start = time.clock();
 i = 0;
 # app registration step (in this instance unnecessary)
 # tn.write('{"appName": "Example", "appKey": "9f54141b4b4c567c558d3a76cb8d715cbde03096"}');
-tn.write('{"enableRawOutput": true, "format": "Json"}');
+tn.write(('{"enableRawOutput": true, "format": "Json"}'))
 
 # blink_or_not = raw_input('Non-zero blink(1) or zero blink(0): ')
-person_name = raw_input('Enter the name of the person: ')
-outfile = 'up/' + person_name + "_file.csv";
-# outfile = 'down/' + person_name + "_file.csv";
-outfptr = open(outfile, 'a');
-headerStr = "timeDiff,rawEeg,signalLevel,blinkStrength,attention,meditation,lowGamma,highGamma,highAlpha,delta,highBeta,lowAlpha,lowBeta,theta";
-outfptr.write(headerStr + "\n");
+# person_name = raw_input('Enter the name of the person: ')
+# outfile = person_name + "_file.csv";
+# # outfile = 'down/' + person_name + "_file.csv";
+# outfptr = open(outfile, 'w');
+# headerStr = "timeDiff,rawEeg,signalLevel,blinkStrength,attention,meditation,lowGamma,highGamma,highAlpha,delta,highBeta,lowAlpha,lowBeta,theta";
+# outfptr.write(headerStr + "\n");
 
 eSenseDict = {'attention': 0, 'meditation': 0};
 waveDict = {'lowGamma': 0, 'highGamma': 0, 'highAlpha': 0, 'delta': 0, 'highBeta': 0, 'lowAlpha': 0, 'lowBeta': 0,
@@ -51,6 +49,7 @@ while i < 500:
     # print time.clock(), " is the time"
 
     line = tn.read_until('\r');
+
     if len(line) > 0:
         timediff = time.clock() - start;
         dict = json.loads(str(line));
@@ -83,9 +82,9 @@ while i < 500:
                 waveDict['theta'] == 0:
             continue
         print(outputstr)
-        if outfile != "null":
-            outfptr.write(outputstr + "\n");
-        i = i + 1;
+        # if outfile != "null":
+        #     outfptr.write(outputstr + "\n");
+        # i = i + 1;
 
 # Data Recorded for a single person
 data_row = pd.DataFrame(
@@ -119,7 +118,7 @@ dataset = dataset.append(pd.Series([person_name, [attention_values], [blinkStren
 
 # Appending and storing the data in the same csv
 # dataset.append(data_row)
-dataset.to_csv('darren_data_eeg_pre.csv')
+# dataset.to_csv('darren_data_eeg_pre.csv')
 
 tn.close();
 # outfptr.close();

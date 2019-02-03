@@ -22,6 +22,9 @@ for i in range(len(downTest)):
 x_train, x_test, y_train, y_test = train_test_split(test_down_data, downTest.gammaMid.values, test_size=0.2,
                                                     random_state=4)
 
+print
+x_train
+
 # load the model from disk
 loaded_model = joblib.load(filename)
 result = loaded_model.predict(x_test)

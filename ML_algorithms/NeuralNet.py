@@ -72,7 +72,12 @@ from sklearn.preprocessing import LabelBinarizer
 
 encoder = LabelBinarizer()
 labels = encoder.fit_transform(df.action.values)
-print(labels.shape)
+print(labels[0])
+print(df.action.values[0])
+print(labels[36000])
+print(df.action.values[36000])
+print(labels[16000])
+print(df.action.values[16000])
 
 # creating training and test sets
 x_train, x_test, y_train, y_test = train_test_split(data, labels)
@@ -82,10 +87,10 @@ X_scaled = X_std * (np.max(x_train) - np.min(x_train)) + np.min(x_train)
 
 x_train = x_train.astype('float32') / X_scaled
 
-# Y_std = (y_train - y_train.min(axis=0)) / (y_train.max(axis=0) - y_train.min(axis=0))
-# Y_scaled = Y_std * (np.max(y_train) - np.min(y_train)) + np.min(y_train)
-# y_train = y_train.astype('float32') / Y_scaled
-# y_train = y_train.astype('float32') / X_scaled
+X_std_test = (x_test - x_test.min(axis=0)) / (x_test.max(axis=0) - x_test.min(axis=0))
+X_scaled_test = X_std_test * (np.max(x_test) - np.min(x_test)) + np.min(x_test)
+x_test = x_test.astype('float32') / X_scaled_test
+x_test = x_test.astype('float32') / X_scaled_test
 
 from keras import models
 from keras import layers
@@ -100,16 +105,22 @@ network.compile(optimizer="Adam",
                 loss='categorical_crossentropy',
                 metrics=['acc'])
 
+network.summary()
+
 history = network.fit(x_train, y_train, validation_split=0.33,
                       epochs=10, verbose=1)
 
-network.save('../models/neural_net.h5')
+# network.save('../models/neural_net.h5')
 
 loss_and_metrics = network.evaluate(x_test, y_test)
 print('loss and metrics', loss_and_metrics)
 
 print('prediction: ', network.predict(x_test))
 
+score = network.evaluate(x_test, y_test, verbose=0, batch_size=16)
+print('evaluate ', score)
+print('Test loss:', score[0])
+print('Test accuracy:', score[1])
 import matplotlib.pyplot as plt
 
 # Plot training & validation accuracy values

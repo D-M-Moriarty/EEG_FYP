@@ -67,7 +67,7 @@ from keras import models
 from keras import layers
 
 model = models.Sequential()
-model.add(layers.Conv2D(32, (3, 3), activation='relu', input_shape=(90, 10, 1)))
+model.add(layers.Conv2D(32, (3, 3), activation='relu', input_shape=(9, 100, 1)))
 # model.add(layers.MaxPooling2D((2, 2)))
 model.add(layers.Conv2D(64, (3, 3), activation='relu'))
 # model.add(layers.MaxPooling2D((3, 3)))
@@ -87,7 +87,7 @@ model.add(layers.Dense(3, activation='softmax'))
 
 model.summary()
 
-x_train = x_train.reshape((423, 90, 10, 1))
+x_train = x_train.reshape((423, 9, 100, 1))
 print(np.max(x_train))
 print(np.max(x_test))
 print(np.min(x_train))
@@ -108,4 +108,4 @@ model.compile(optimizer='adam',
               loss='categorical_crossentropy',
               metrics=['accuracy'])
 
-model.fit(x_train, y_train, epochs=15, batch_size=64)
+print(model.fit(x_train, y_train, epochs=15, batch_size=64))
