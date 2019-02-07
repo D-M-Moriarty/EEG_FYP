@@ -1,0 +1,60 @@
+Metadata-Version: 2.1
+Name: accepts
+Version: 2018.11.19
+Summary: @accepts decorator to check arguments types
+Home-page: https://github.com/looking-for-a-job/accepts.py
+License: UNKNOWN
+Keywords: type decorator
+Platform: UNKNOWN
+Classifier: Intended Audience :: Developers
+Classifier: License :: OSI Approved :: BSD License
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python
+Classifier: Programming Language :: Python :: 2.7
+Classifier: Programming Language :: Python :: 3.4
+Classifier: Programming Language :: Python :: 3.5
+Classifier: Programming Language :: Python :: 3.6
+Classifier: Programming Language :: Python :: 3.7
+Classifier: Topic :: Software Development
+Description-Content-Type: text/markdown
+Requires-Dist: public
+Requires-Dist: setuptools
+
+[![](https://img.shields.io/pypi/pyversions/accepts.svg?longCache=True)](https://pypi.org/pypi/accepts/)
+
+#### Install
+```bash
+$ [sudo] pip install accepts
+```
+
+#### Features
+*	support **multiple types** argument
+*	support **None** argument
+*	human readable detailed exception message
+
+#### Functions
+function|description
+-|-
+`accepts.accepts(*types)`|@accepts decorator
+
+#### Examples
+```python
+>>> from accepts import accepts
+>>> @accepts(int)
+def inc(value):
+	return value+1
+
+>>> inc(1) # ok
+
+# multiple types
+>>> @accepts((int,float))
+>>> inc(1.5) # ok
+>>> inc("string")
+TypeError: inc() argument #0 is not instance of (<class 'int'>, <class 'float'>)
+
+# None
+>>> @accepts((int,float,type(None)))
+```
+
+<p align="center"><a href="https://pypi.org/project/readme-md/">readme-md</a> - README.md generator</p>
+
