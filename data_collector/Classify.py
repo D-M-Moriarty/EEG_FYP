@@ -1,5 +1,6 @@
 import json
 import subprocess
+import time
 from telnetlib import Telnet
 
 import numpy as np
@@ -18,6 +19,9 @@ class Classify:
         # load the model from disk
         self.filename = '../models/rfc_2_8vals_study_binary_model.pkl'
         self.loaded_model = joblib.load(self.filename)
+        self.output_file = 'pikachu.csv'
+        self.out = open(self.output_file, 'w')
+        self.PERIOD_OF_TIME = 300  # 5min
 
     def prediction(self, array):
         return self.loaded_model.predict(array)
@@ -32,7 +36,7 @@ class Classify:
                self.wave_dict['delta'] == 0 and self.wave_dict['theta'] == 0
 
     def make_output_str(self):
-        return str(self.raw_eeg) + str(self.wave_dict['delta']) + ", " + str(self.wave_dict['theta']) + ", " + \
+        return str(self.raw_eeg) + ", " + str(self.wave_dict['delta']) + ", " + str(self.wave_dict['theta']) + ", " + \
                str(self.wave_dict['lowAlpha']) + ", " + str(self.wave_dict['highAlpha']) + ", " \
                + str(self.wave_dict['lowBeta']) + ", " + str(
             self.wave_dict['highBeta']) + ", " + str(
@@ -78,22 +82,41 @@ class Classify:
         if result == [1]:
             subprocess.call(["afplay", "dit.wav"])
 
-    def read_tn(self):
+    def write_to_file(self, data):
+        self.out.write(data + ', rest' + "\n")
+
+    def read_tn(self, ml):
+        start = time.time()
         while True:
             line = self.tn.read_until(b'\r')
             line = line.decode()
             if len(line) > 0:
                 dict = json.loads(str(line))
                 if "rawEeg" in dict:
-                    self.set_rawEeg(dict['rawEeg'])
+                    self.set_raw_eeg(dict['rawEeg'])
                 if "eegPower" in dict:
-                    self.set_waveDict(dict['eegPower'])
+                    self.set_wave_dict(dict['eegPower'])
                 if self.check_zero_vals():
                     continue
-                self.process_values()
+                print(self.make_output_str())
+                self.write_to_file(self.make_output_str())
+                if ml:
+                    self.process_values()
+                if time.time() > start + self.PERIOD_OF_TIME: break
 
     def close_tn(self):
         self.tn.close()
+
+
+def main():
+    classify = Classify()
+    classify.read_tn(False)
+
+
+if __name__ == '__main__':
+    main()
+
+
 
 #
 # df1 = pd.DataFrame(data_array,
