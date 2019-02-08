@@ -1,8 +1,9 @@
 import time
 
+import cv2
 from click._compat import raw_input
 
-from NeuroPy import NeuroPy
+from NeuroPy.NeuroPy.NeuroPy import NeuroPy
 
 neuroPy = NeuroPy()
 neuroPy.start()
@@ -20,7 +21,7 @@ def get_usable_waves():
 
 
 try:
-    time.sleep(3)
+    # time.sleep(3)
     action = raw_input("enter the action being performed: ")
     start = time.time()
     while True:
@@ -29,6 +30,7 @@ try:
         time.sleep(0.1)  # Don't eat the CPU cycles
         if time.time() > start + PERIOD_OF_TIME:
             break
+    cv2.destroyAllWindows()
 
 except:
     print("exit")
