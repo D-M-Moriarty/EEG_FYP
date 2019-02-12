@@ -3,7 +3,7 @@ from tkinter import *
 
 import PIL.ImageTk
 import cv2
-from PIL import ImageTk, Image
+from PIL import Image
 
 
 class DisplayImage:
@@ -26,7 +26,6 @@ class DisplayImage:
         self.window = Tk()
         self.window.title("OpenCV and Tkinter")
         # Load an image using OpenCV
-        print(self.path)
         cv_img = cv2.cvtColor(cv2.imread(self.path), cv2.COLOR_BGR2RGB)
         # Get the image dimensions (OpenCV stores image data as NumPy ndarray)
         height, width, no_channels = cv_img.shape
@@ -42,4 +41,4 @@ class DisplayImage:
         self.window.mainloop()
 
 
-DisplayImage("/Users/darrenmoriarty/ml/EEG_FYP/image_processing/images/arrow_down0.4.png").create_window()
+# DisplayImage("/Users/darrenmoriarty/ml/EEG_FYP/image_processing/images/arrow_down0.4.png").create_window()
