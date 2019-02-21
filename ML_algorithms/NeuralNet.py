@@ -1,17 +1,17 @@
 import numpy as np
 import pandas as pd
 
-updf1 = pd.read_csv("../data_files/up/upFor5(1).csv")
-updf2 = pd.read_csv("../data_files/up/upFor5(2).csv")
-updf3 = pd.read_csv("../data_files/up/upFor5(3).csv")
-updf4 = pd.read_csv("../data_files/up/upFor5(4).csv")
-updf5 = pd.read_csv("../data_files/up/upFor5(5).csv")
-downdf1 = pd.read_csv("../data_files/down/downFor5(1).csv")
-downdf2 = pd.read_csv("../data_files/down/downFor5(2).csv")
-downdf3 = pd.read_csv("../data_files/down/downFor5(3).csv")
-downdf4 = pd.read_csv("../data_files/down/downFor5(4).csv")
-downdf5 = pd.read_csv("../data_files/down/downFor5(5).csv")
-relax_1_minute = pd.read_csv("../data_files/relax/Relax1Minute.csv")
+updf1 = pd.read_csv("../data_files/data_from_phone_recordings/up/upFor5(1).csv")
+updf2 = pd.read_csv("../data_files/data_from_phone_recordings/up/upFor5(2).csv")
+updf3 = pd.read_csv("../data_files/data_from_phone_recordings/up/upFor5(3).csv")
+updf4 = pd.read_csv("../data_files/data_from_phone_recordings/up/upFor5(4).csv")
+updf5 = pd.read_csv("../data_files/data_from_phone_recordings/up/upFor5(5).csv")
+downdf1 = pd.read_csv("../data_files/data_from_phone_recordings/down/downFor5(1).csv")
+downdf2 = pd.read_csv("../data_files/data_from_phone_recordings/down/downFor5(2).csv")
+downdf3 = pd.read_csv("../data_files/data_from_phone_recordings/down/downFor5(3).csv")
+downdf4 = pd.read_csv("../data_files/data_from_phone_recordings/down/downFor5(4).csv")
+downdf5 = pd.read_csv("../data_files/data_from_phone_recordings/down/downFor5(5).csv")
+relax_1_minute = pd.read_csv("../data_files/data_from_phone_recordings/relax/Relax1Minute.csv")
 
 frames = [downdf1, downdf2, downdf3, downdf4,
           downdf5, updf1, updf2, updf3, updf4, updf5, relax_1_minute]
@@ -82,15 +82,18 @@ print(df.action.values[16000])
 # creating training and test sets
 x_train, x_test, y_train, y_test = train_test_split(data, labels)
 
-X_std = (x_train - x_train.min(axis=0)) / (x_train.max(axis=0) - x_train.min(axis=0))
-X_scaled = X_std * (np.max(x_train) - np.min(x_train)) + np.min(x_train)
+from sklearn.preprocessing import MinMaxScaler
 
-x_train = x_train.astype('float32') / X_scaled
+scaler = MinMaxScaler()
 
-X_std_test = (x_test - x_test.min(axis=0)) / (x_test.max(axis=0) - x_test.min(axis=0))
-X_scaled_test = X_std_test * (np.max(x_test) - np.min(x_test)) + np.min(x_test)
-x_test = x_test.astype('float32') / X_scaled_test
-x_test = x_test.astype('float32') / X_scaled_test
+x_train = scaler.fit_transform(x_train)
+x_test = scaler.transform(x_test)
+
+# X_std = (x_train - x_train.min(axis=0)) / (x_train.max(axis=0) - x_train.min(axis=0))
+# X_scaled = X_std * (np.max(x_train) - np.min(x_train)) + np.min(x_train)
+# x_train = x_train.astype('float32') / X_scaled
+# x_test = x_test.astype('float32') / X_scaled
+# x_test = x_test.astype('float32') / X_scaled
 
 from keras import models
 from keras import layers

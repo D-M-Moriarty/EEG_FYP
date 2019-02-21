@@ -67,7 +67,6 @@ for i in range(len(df)):
                df.gammaLow.values[i],
                df.gammaMid.values[i]]
 
-
 encoder = LabelBinarizer()
 labels = encoder.fit_transform(df.action.values)
 
@@ -75,7 +74,6 @@ print(labels[0])
 print(df.action.values[0])
 print(labels[16000])
 print(df.action.values[16000])
-
 
 # creating training and test sets
 x_train, x_test, y_train, y_test = train_test_split(data, labels, test_size=0.2, random_state=4)

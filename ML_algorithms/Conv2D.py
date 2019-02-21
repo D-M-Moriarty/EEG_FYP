@@ -3,12 +3,11 @@
 import numpy as np
 import pandas as pd
 
-up = pd.read_csv("../data_files/up_images/up.csv", header=None).as_matrix()
-down = pd.read_csv("../data_files/down_images/down.csv", header=None).as_matrix()
-rest = pd.read_csv("../data_files/rest_images/rest.csv", header=None).as_matrix()
-mnist = pd.read_csv("../data_files/mnist_test.csv")
+up = pd.read_csv("../data_files/data_from_phone_recordings/up_images/up.csv", header=None).as_matrix()
+down = pd.read_csv("../data_files/data_from_phone_recordings/down_images/down.csv", header=None).as_matrix()
+rest = pd.read_csv("../data_files/data_from_phone_recordings/rest_images/rest.csv", header=None).as_matrix()
 
-training_data_file = open("../data_files/up_images/up.csv", 'r')
+training_data_file = open("../data_files/data_from_phone_recordings/up_images/up.csv", 'r')
 training_data_list = training_data_file.readlines()
 training_data_file.close()
 
@@ -68,33 +67,17 @@ from keras import layers
 
 model = models.Sequential()
 model.add(layers.Conv2D(32, (3, 3), activation='relu', input_shape=(9, 100, 1)))
-# model.add(layers.MaxPooling2D((2, 2)))
 model.add(layers.Conv2D(64, (3, 3), activation='relu'))
-# model.add(layers.MaxPooling2D((3, 3)))
-# model.add(layers.Conv2D(64, (3, 3), activation='relu'))
-
-model.summary()
-
 model.add(layers.Flatten())
 model.add(layers.Dense(128, activation='relu'))
 model.add(layers.Dense(3, activation='softmax'))
 
-# add model layers
-# model.add(layers.Conv2D(64, kernel_size=3, activation='relu', input_shape=(9, 10, 1)))
-# model.add(layers.Conv2D(32, kernel_size=3, activation='relu'))
-# model.add(layers.Flatten())
-# model.add(layers.Dense(3, activation='softmax'))
 
 model.summary()
-
 x_train = x_train.reshape((423, 9, 100, 1))
 print(np.max(x_train))
 print(np.max(x_test))
 print(np.min(x_train))
-X_std = (x_train - x_train.min(axis=0)) / (x_train.max(axis=0) - x_train.min(axis=0))
-X_scaled = X_std * (np.max(x_train) - np.min(x_train)) + np.min(x_train)
-
-x_train = x_train.astype('float32') / X_scaled
 
 # x_test = x_test.reshape((2, 90, 10, 1))
 # x_test = x_test.astype('float32') / X_scaled

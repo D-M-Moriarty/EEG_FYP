@@ -4,23 +4,23 @@ from sklearn.ensemble import RandomForestClassifier
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import LabelBinarizer
 
-updf1 = pd.read_csv("../data_files/up/upFor5(1).csv")
-updf2 = pd.read_csv("../data_files/up/upFor5(2).csv")
-updf3 = pd.read_csv("../data_files/up/upFor5(3).csv")
-updf4 = pd.read_csv("../data_files/up/upFor5(4).csv")
-updf5 = pd.read_csv("../data_files/up/upFor5(5).csv")
-downdf1 = pd.read_csv("../data_files/down/downFor5(1).csv")
-downdf2 = pd.read_csv("../data_files/down/downFor5(2).csv")
-downdf3 = pd.read_csv("../data_files/down/downFor5(3).csv")
-downdf4 = pd.read_csv("../data_files/down/downFor5(4).csv")
-downdf5 = pd.read_csv("../data_files/down/downFor5(5).csv")
-relax_1_minute = pd.read_csv("../data_files/relax/Relax1Minute.csv")
+updf1 = pd.read_csv("../data_files/data_from_phone_recordings/up/upFor5(1).csv")
+updf2 = pd.read_csv("../data_files/data_from_phone_recordings/up/upFor5(2).csv")
+updf3 = pd.read_csv("../data_files/data_from_phone_recordings/up/upFor5(3).csv")
+updf4 = pd.read_csv("../data_files/data_from_phone_recordings/up/upFor5(4).csv")
+updf5 = pd.read_csv("../data_files/data_from_phone_recordings/up/upFor5(5).csv")
+downdf1 = pd.read_csv("../data_files/data_from_phone_recordings/down/downFor5(1).csv")
+downdf2 = pd.read_csv("../data_files/data_from_phone_recordings/down/downFor5(2).csv")
+downdf3 = pd.read_csv("../data_files/data_from_phone_recordings/down/downFor5(3).csv")
+downdf4 = pd.read_csv("../data_files/data_from_phone_recordings/down/downFor5(4).csv")
+downdf5 = pd.read_csv("../data_files/data_from_phone_recordings/down/downFor5(5).csv")
+relax_1_minute = pd.read_csv("../data_files/data_from_phone_recordings/relax/Relax1Minute.csv")
 
 frames = [downdf1, downdf2, downdf3, downdf4,
           downdf5, updf1, updf2, updf3, updf4, updf5, relax_1_minute]
 df = pd.concat(frames)
 
-downTest = pd.read_csv("../data_files/down/downTest5Secs.csv")
+downTest = pd.read_csv("../data_files/data_from_phone_recordings/down/downTest5Secs.csv")
 test_down_data = np.array([[0 for x in range(9)] for y in range(len(downTest))])
 for i in range(len(downTest)):
     test_down_data[i] = [downTest.eegRawValue.values[i],
@@ -32,7 +32,7 @@ for i in range(len(downTest)):
                          downTest.betaHigh.values[i],
                          downTest.gammaLow.values[i],
                          downTest.gammaMid.values[i]]
-downTest2 = pd.read_csv("../data_files/down/downTest2.csv")
+downTest2 = pd.read_csv("../data_files/data_from_phone_recordings/down/downTest2.csv")
 test_down_data2 = np.array([[0 for x in range(9)] for y in range(len(downTest2))])
 for i in range(len(downTest2)):
     test_down_data2[i] = [downTest.eegRawValue.values[i],
@@ -44,7 +44,7 @@ for i in range(len(downTest2)):
                           downTest.betaHigh.values[i],
                           downTest.gammaLow.values[i],
                           downTest.gammaMid.values[i]]
-upTest = pd.read_csv("../data_files/up/upTest.csv")
+upTest = pd.read_csv("../data_files/data_from_phone_recordings/up/upTest.csv")
 test_up = np.array([[0 for x in range(9)] for y in range(len(upTest))])
 for i in range(len(upTest)):
     test_up[i] = [upTest.eegRawValue.values[i],
@@ -101,14 +101,14 @@ print("Accuracy for x_test:", metrics.accuracy_score(y_test, y_pred))
 # print(encoder.inverse_transform(y_test[0]))
 y_pred = rfc.predict(test_down_data)
 a = 0
-print("The prediction for the test data down set is ", y_pred)
+# print("The prediction for the test data down set is ", y_pred)
 for i in range(len(y_pred)):
     if y_pred[i][0] == [1.] and y_pred[i][1] == [0.] and y_pred[i][2] == [0.]:
         # print('match', y_pred[i])
         a = a + 1
-
-print('y_pred length ', len(y_pred))
-print('number of matches ', a)
+#
+# print('y_pred length ', len(y_pred))
+# print('number of matches ', a)
 print('accuracy ', a / len(y_pred), '%')
 
 from sklearn.externals import joblib
