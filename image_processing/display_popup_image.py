@@ -41,4 +41,4 @@ class DisplayImage:
         self.window.mainloop()
 
 
-# DisplayImage("/Users/darrenmoriarty/ml/EEG_FYP/image_processing/images/arrow_down0.4.png").create_window()
+DisplayImage("/Users/darrenmoriarty/ml/EEG_FYP/image_processing/images/arrow_down0.4.png").create_window()
